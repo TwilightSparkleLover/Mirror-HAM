@@ -1,0 +1,52 @@
+.GLOBL  ASM_PutPixelM4
+
+.ARM
+.ALIGN
+.TEXT
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@
+@   ASM_PutPixelM4 - Stores a Pixel into VRAM (MODE 4 ONLY!!!)
+@
+@   Not sure if this is OK anyway *cought*
+@
+@   c/c++ : extern void ASM_PutPixelM4(u32 x, u32 y, u32 color);
+@
+@   r0 = x, r1 = y, r2 = color
+@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ASM_PutPixelM4:
+
+        STMFD   sp!, {r3-r4}                        @ Save registers
+
+        @ START - F_DISCNT_BUFSEL_GET
+        MOV     r3,     #0x04000000                 @ r3 = 0x04000000
+        LDR     r4,     [r3]                        @ r4 = val from addr 0x04000000
+        AND     r4,     r4,     #0x10               @ r4 = r4 & 0x10
+        MOV     r4,     r4,     LSR #4              @ r4 = r4 >> 4
+        @ End - F_DISCNT_BUFSEL_GET
+        CMP     r4,     #1                          @ r4 == 1
+        BEQ     .CalcVRamAddr1
+        B       .CalcVRamAddr2
+
+   .CalcVRamAddr1:
+        MOV     r4,     #240                        @ r4 = 240
+        MUL     r3,     r4,     r1                  @ r3 = 240 * y
+        ADD     r3,     r3,     r0                  @ r3 = r3 + x
+        ADD     r3,     r3,     #0x6000000          @ r3 = r3 + VRAM_ADDR
+        B       .StoreColor
+
+   .CalcVRamAddr2:
+        MOV     r4,     #240                        @ r4 = 240
+        MUL     r3,     r4,     r1                  @ r3 = 240 * y
+        ADD     r3,     r3,     r0                  @ r3 = r3 + x
+        ADD     r3,     r3,     #0x6000000          @ r3 = r3 + VRAM_ADDR
+        ADD     r3,     r3,     #0xA000             @ r3 = r3 + 0xA000 (Backbuffer Addr)
+        B       .StoreColor
+
+   .StoreColor:
+        STRH    r2,     [r3]                        @ Store colorvalue in VRAM
+
+        LDMFD   sp!, {r3-r4}                        @ Restore registers
+        BX      lr
+

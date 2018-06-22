@@ -1,0 +1,97 @@
+#!/usr/bin/perl
+######################################################################
+# DOS <-> Unix text Converter             Version 1.0                # 
+# Copyright 1999 Frederic TYNDIUK (FTLS)  All Rights Reserved.       #
+# E-Mail: tyndiuk@ftls.org                Script License: GPL        #
+# Created  06/30/99                       Last Modified 06/30/99     #
+# Scripts Archive at:                     http://www.ftls.org/cgi/   #
+######################################################################
+# Function :                                                         #
+# Converts DOS-text file to Unix-text file or Unix-text file to DOS. #
+######################################################################
+##################### license & copyright header #####################
+#                                                                    #
+#                 Copyright (c) 1999 TYNDIUK Frederic                #
+#                                                                    #
+#  This program is free software; you can redistribute it and/or     #
+#  modify it under the terms of the GNU General Public License as    #
+#  published by the Free Software Foundation; either version 2 of    #
+#  the License, or (at your option) any later version.               #
+#                                                                    #
+#  This program is distributed in the hope that it will be useful,   #
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of    #
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the     #
+#  GNU General Public License for more details.                      #
+#                                                                    #
+#  You should have received a copy of the GNU General Public License #
+#  along with this program in the file 'COPYING'; if not, write to   #
+#  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,  #
+#  Boston, MA 02111-1307, USA, or contact the author:                #
+#                                                                    #
+#                              TYNDIUK Frederic <tyndiuk@ftls.org>   #
+#                                       <http://www.ftls.org/>       #
+#                                                                    #
+################### end license & copyright header ###################
+######################################################################
+
+$Version = "1.0";
+$Copyright  = "DOS <-> Unix text Converter v$Version (C) 1999 Frederic TYNDIUK (alias FTLS)\n";
+$Copyright .= "Report bugs to tyndiuk\@ftls.org, News and Updates: http://www.ftls.org/\n";
+
+$d2u = $u2d = 0;
+
+	# En: Check Args
+	# Fr: Verification des aguments
+	while ($ARGV[0] =~ /^-/) {
+		if (($ARGV[0] eq "-d2u") || ($ARGV[0] eq "--dos-to-unix")) { $d2u = 1; }
+		if (($ARGV[0] eq "-u2d") || ($ARGV[0] eq "--unix-to-dos")) { $u2d = 1; }
+		if (($ARGV[0] eq "-v")   || ($ARGV[0] eq "--version"))     { print $Copyright; exit; }
+		if (($ARGV[0] eq "-h")   || ($ARGV[0] eq "--help"))        { &Usage(); }
+		shift(@ARGV);
+	}
+
+	if ((@ARGV < 1) || ($d2u == $u2d)) {
+		&Usage;
+	}
+
+	while ($ARGV[0] ne "") {
+		&d2u2d($ARGV[0], $ARGV[0]);
+		shift(@ARGV);
+	}
+
+sub d2u2d {
+	my($SourceFile, $ResultFile) = @_;
+	my($DOS, @DOSFile);
+
+	open(FILE, "$SourceFile") || die("Cannot open source file : $SourceFile, Error $!\n");
+	@DOSFile = <FILE>;
+	close(FILE);
+
+	open(COM, ">$SourceFile.old") || die("Cannot write file $SourceFile.old, Error $!");
+	print COM @DOSFile;
+	close(COM);
+
+	$DOS = join("", @DOSFile);
+	if ($d2u) {
+		$DOS =~ s/\r\n/\n/g;  # Dos -> Unix
+	} else {
+		$DOS =~ s/\n/\r\n/g;  # Unix -> Dos
+	}
+
+	open(COM, ">$ResultFile") || die("Cannot write file $ResultFile, Error $!");
+	print COM $DOS;
+	close(COM);
+}
+
+sub Usage {
+	print STDERR <<EOF;
+$Copyright
+Usage: $0 [Options] [-d2u / -u2d] DosFile...
+  -d2u        --dos-to-unix           convert DOS-text file to Unix
+  -u2d        --unix-to-dos           convert Unix-text file to DOS
+Options:
+  -v,         --version               output version information and exit
+  -h,         --help                  display this help and exit
+EOF
+	exit 1;
+}

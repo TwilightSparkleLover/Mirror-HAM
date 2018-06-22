@@ -1,0 +1,14 @@
+{START_PREFIX}
+Const %ARRAYNAME% : array[0..%FILESIZE%-1] of Byte = ( 
+{END_PREFIX}
+
+{START_CONV}
+?FIRST?=  
+?BYTE?=$%BYTE%,
+?LASTBYTE?=$%BYTE%,
+?COUNT?=8
+{END_CONV}
+
+{START_FINAL}
+?BYTE?=$%BYTE% );
+{END_FINAL}

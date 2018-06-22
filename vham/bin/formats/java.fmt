@@ -1,0 +1,16 @@
+{START_PREFIX}
+static byte %ARRAYNAME%[%FILESIZE%]=
+{ 
+{END_PREFIX}
+
+{START_CONV}
+?FIRST?=	
+?BYTE?=(byte)%INT%, 
+?LASTBYTE?=(byte)%INT%,
+?COUNT?=8
+{END_CONV}
+
+{START_FINAL}
+?BYTE?=(byte)%INT%
+}; 
+{END_FINAL}

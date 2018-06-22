@@ -1,0 +1,10 @@
+Under the bar that reads tUME v00.2620q is a menu bar that appears 
+when you click on it with the left mouse button. 
+
+Select Project|Load. Load any file with the .MAP extension. 
+
+You can switch between the two panes by pressing SPACE. 
+
+You can scroll through the windows within a pane by using '1' and '2'. 
+
+For additional keyboard commands, find the [KEYS] section of tUME.ini. 

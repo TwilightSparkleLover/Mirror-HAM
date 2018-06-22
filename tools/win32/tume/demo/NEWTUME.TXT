@@ -1,0 +1,5 @@
+tUME Significant New Features                                    01/23/94
+Confidential Information - Property of Echidna
+Copyright (c) 1994 Echidna
+
+The demo version v00.2620 is the current version of tUME as of 01/23/94

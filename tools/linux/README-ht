@@ -1,0 +1,46 @@
+Header Tool v0.01 ---- (c) 02 buZz
+Contact : buzz@ddsw.nl
+
+ history :
+
+ I've build this tool cause there where no easy to work with tools for GBA
+ header manipulation that i could use while running linux.
+
+ requirements :
+
+ perl5 or higher (build using perl 5.6.1)
+ Getopt::Std module (www.cpan.org if not allready installed)
+ Some GBA roms
+
+ usage :
+
+ ht.pl [-cl] [-n "ROMNAME"] [-o FILENAME] <FILENAME>
+
+  <FILENAME>      The .gba romfile you want to use
+  [-o FILENAME]   Fix errors and save rom as FILENAME
+  [-n "ROMNAME"]  Change name to ROMNAME (12 chars max)
+  [-c]            Check complement check
+  [-l]            Check logo
+
+ examples :
+
+  ht.pl -cl thisrom.gba
+   Checks logo and complement check in thisrom.gba and prints
+   the found results
+
+  ht.pl -cl -o newrom.gba thisrom.gba
+   Checks logo and complement check in thisrom.gba and saves a fixed
+   version as newrom.gba
+
+  ht.pl -n "My game" -o newrom.gba thisrom.gba
+   Changes the name in the header of thisrom.gba from the current
+   name into My game and saves the result as the new rom newrom.gba
+
+  caution :
+
+  If you change the name inside a GBA rom , you really need to fix the
+  checksum aswell , else it will not be functional.
+
+
+Hope you enjoy this!
+buZz

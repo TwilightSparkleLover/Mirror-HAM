@@ -1,0 +1,18 @@
+{START_PREFIX}
+.include "vumacros.h"
+.data
+.align 4
+.global %ARRAYNAME%
+%ARRAYNAME%:
+{END_PREFIX}
+
+{START_CONV}
+?FIRST?=bxy 
+?BYTE?=0x%BYTE%, 
+?LASTBYTE?=0x%BYTE%
+?COUNT?=2
+{END_CONV}
+
+{START_FINAL}
+?BYTE?=0x%BYTE%
+{END_FINAL}
